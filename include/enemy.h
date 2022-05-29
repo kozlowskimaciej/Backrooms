@@ -16,7 +16,7 @@ class Enemy : public Object2D
     bool spawned_{true};
 
     // Sets velocity for current waypoint
-    void setVelocity();
+    void setVelocity(float frameDurationMul);
 
     // Updated waypoint to player's position
     // only when player is visible
@@ -25,18 +25,14 @@ class Enemy : public Object2D
 
     World::Directions direction = World::Directions::N;
 
-    float linearVelocity_{Conf::linearEnemyVelocity};
-
 public:
     Enemy(b2World &world, b2Vec2 position, float angle);
 
-    void control(const b2Vec2 &playerPos, const World &gameMap, bool debug);
+    void control(const b2Vec2 &playerPos, const World &gameMap, float frameDurationMul, bool debug);
     void startHunt(b2World &world, const Object &player);
     void stopHunt();
 
     bool spawned() const { return spawned_; }
-
-    void setLinearVelocity(float multiplier) { linearVelocity_ = Conf::linearEnemyVelocity * multiplier; }
 };
 
 #endif

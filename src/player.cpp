@@ -19,31 +19,32 @@ Player::Player(b2World &world, const b2Vec2 &position, float angle)
     body_->ResetMassData();
 }
 
-void Player::move()
+void Player::move(float frameDurationMul)
 {
     static constexpr float SPRINT_MULTIPLIER = 2.0f;
+    float linearVelocity = Conf::linearPlayerVelocity * frameDurationMul;
     b2Vec2 newVelocity(0.0f, 0.0f);
 
     // Moving
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        newVelocity += b2Vec2(0.0f, linearVelocity_);
+        newVelocity += b2Vec2(0.0f, linearVelocity);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        newVelocity += b2Vec2(0.0f, -linearVelocity_);
+        newVelocity += b2Vec2(0.0f, -linearVelocity);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        newVelocity += b2Vec2(linearVelocity_, 0.0f);
+        newVelocity += b2Vec2(linearVelocity, 0.0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        newVelocity += b2Vec2(-linearVelocity_, 0.0f);
+        newVelocity += b2Vec2(-linearVelocity, 0.0f);
     }
 
     newVelocity.Normalize();
-    newVelocity *= linearVelocity_;
+    newVelocity *= linearVelocity;
 
     // Sprint only when going forward
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -99,9 +100,9 @@ void Player::itemOperations(UserIO &userIO)
         currentItemIdx_ = 0;
 }
 
-void Player::control(UserIO &userIO)
+void Player::control(UserIO &userIO, float frameDurationMul)
 {
-    move();
+    move(frameDurationMul);
     lookAround(userIO);
     itemOperations(userIO);
 

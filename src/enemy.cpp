@@ -7,12 +7,12 @@ Enemy::Enemy(b2World &world, b2Vec2 position, float angle)
     stopHunt();
 }
 
-void Enemy::setVelocity()
+void Enemy::setVelocity(float frameDurationMul)
 {
     // Set velocity to waypoints location
     b2Vec2 waypointDirection{getVec(getPosition(), waypoint_)};
     waypointDirection.Normalize();
-    waypointDirection *= linearVelocity_;
+    waypointDirection *= Conf::linearEnemyVelocity * frameDurationMul;
     body_->SetLinearVelocity(waypointDirection);
 }
 
@@ -44,12 +44,12 @@ void Enemy::updateHuntTimer()
         stopHunt();
 }
 
-void Enemy::control(const b2Vec2 &playerPos, const World &gameMap, bool debug)
+void Enemy::control(const b2Vec2 &playerPos, const World &gameMap, float frameDurationMul, bool debug)
 {
     if (spawned_)
     {
         updateWaypoint(playerPos, gameMap, debug);
-        setVelocity();
+        setVelocity(frameDurationMul);
         updateHuntTimer();
     }
 }

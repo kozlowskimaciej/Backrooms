@@ -18,7 +18,7 @@ class Player : public Object
 private:
     // Sets velocity based on the local cooridinates
     void setLocalVelocity(const b2Vec2 &newVelocity);
-    void move();
+    void move(float frameDurationMul);
     void lookAround(UserIO &userIO);
     void itemOperations(UserIO &userIO);
 
@@ -29,12 +29,11 @@ private:
     unsigned int currentItemIdx_{0};
 
     b2Vec2 currentChunk_{b2Vec2(INFINITY, INFINITY)};
-    float linearVelocity_{Conf::linearPlayerVelocity};
 
 public:
     Player(b2World &world, const b2Vec2 &position, float angle);
 
-    void control(UserIO &userIO);
+    void control(UserIO &userIO, float frameDurationMul);
     void lookAt(const b2Vec2 &target);
 
     const std::vector<const Object2D *> &getVisibleObjects() const;
@@ -50,7 +49,6 @@ public:
 
     b2Vec2 &getCurrentChunk() { return currentChunk_; }
     void setCurrentChunk(const b2Vec2 &chunkPosition) { currentChunk_ = chunkPosition; }
-    void setLinearVelocity(float multiplier) { linearVelocity_ = Conf::linearPlayerVelocity * multiplier; }
 };
 
 #endif
