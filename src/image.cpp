@@ -46,7 +46,7 @@ void Image::init()
 
     allImages_[ENEMY].addShape(509.0f, 798.0f);
     allImages_[ENEMY].addTexture(Textures::ENEMY);
-    allImages_[ENEMY].addAnimation(3u);
+    // allImages_[ENEMY].addAnimation(3u);
 
     allImages_[EMF].addShape(1864.0f, 1051.0f, true);
     allImages_[EMF].addTexture(Textures::EMF);
@@ -60,13 +60,17 @@ void Image::init()
     allImages_[EMF3].addShape(1864.0f, 1051.0f, true);
     allImages_[EMF3].addTexture(Textures::EMF3);
 
+    allImages_[EMF_DROPPED].addShape(134.0f, 452.0f);
+    allImages_[EMF_DROPPED].addTexture(Textures::EMF_DROPPED);
+
     allImages_[FLASHLIGHT].addShape(1920.0f, 1080.0f, true);
     allImages_[FLASHLIGHT].addTexture(Textures::FLASHLIGHT);
 
     allImages_[BACKGROUND].addShape(1777.0f, 1000.0f, true);
     allImages_[BACKGROUND].addTexture(Textures::BACKGROUND);
 
-    allImages_[PAGE].addShape(10.f, 10.f);
+    allImages_[PAGE].addShape(200.f, 283.f);
+    allImages_[PAGE].addTexture(Textures::PAGE);
 
     allImages_[NOISE].addShape(10.f, 10.f, true);
 }

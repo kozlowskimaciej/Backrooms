@@ -15,6 +15,7 @@ const std::map<Object::Type, Object::Category> Object::categoryMap_{
     {Type::PLAYER, PLAYER},
     {Type::ENEMY, ENEMY},
     {Type::EMF, ITEM},
+    {Type::PAGE, ITEM},
     {Type::CAMERA, CAMERA},
     {Type::ITEM_PICK_AREA, ITEM_PICK_AREA}};
 
@@ -25,7 +26,8 @@ const Object::Arguments Object::argList[static_cast<int>(Type::TOTAL)]{
     {b2_dynamicBody, getShape(.8f)},
     {b2_staticBody, getShape(0.1f)},
     {b2_staticBody, getShape(10.0f)},
-    {b2_staticBody, getShape(Conf::FOVangle, Conf::renderDistance, 5)}};
+    {b2_staticBody, getShape(Conf::FOVangle, Conf::renderDistance, 5)},
+    {b2_dynamicBody, getShape(.1f)}};
 
 Object::Arguments::Arguments(b2BodyType bodyType, std::unique_ptr<b2Shape> shape)
     : bodyType_{bodyType}, fixDef_{getFixtureDef(std::move(shape))} {}
@@ -84,7 +86,11 @@ const b2FixtureDef &Object::getFixtureDef(std::unique_ptr<b2Shape> shape)
     fixture.friction = 0.0f;
     return fixture;
 }
-
+Object::~Object()
+{
+    if (body_)
+        destroyBody();
+}
 Object::Object(b2World &world, Type type)
     : Object{world, type, getNewPosition(), 0} {}
 

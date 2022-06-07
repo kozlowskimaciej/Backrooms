@@ -18,6 +18,7 @@ public:
 
     virtual void action(const b2Vec2 &playerPos) = 0;
     virtual void drop(b2World &world, const Object &player) = 0;
+    virtual void picked() = 0;
 };
 
 #endif

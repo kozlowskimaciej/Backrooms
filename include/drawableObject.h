@@ -13,8 +13,7 @@ private:
     static std::map<Object::Type, Image::Type> shapesMap_;
 
 protected:
-    DrawableObject(b2World &world, Type type, const b2Vec2 &position, float angle)
-        : Object{world, type, position, angle}, shapeIdx_{shapesMap_.at(type)} {}
+    DrawableObject(b2World &world, Type type, const b2Vec2 &position, float angle);
 
 public:
     Image::Type getShapeIdx() const { return shapeIdx_; }

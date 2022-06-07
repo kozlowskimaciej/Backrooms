@@ -9,6 +9,13 @@ sf::Color UserIO::dimColor(const sf::Color &color, float dimFactor)
                      color.a);
 }
 
+UserIO::UserIO(const std::string &title)
+{
+    getMouseXMovement();
+    window_.create(sf::VideoMode(Conf::windowWidth, Conf::windowHeight), title);
+    window_.setMouseCursorVisible(false);
+}
+
 void UserIO::drawOnScreen(Image::Type shapeIdx, float x, float y, float xScale, float yScale, float dim, float textureOffset)
 {
     sf::Vector2u size{window_.getSize()};
@@ -21,6 +28,10 @@ void UserIO::drawOnScreen(Image::Type shapeIdx, float x, float y, float xScale, 
 
     window_.draw(shape);
 }
+
+void UserIO::start() { window_.clear(); }
+
+void UserIO::end() { window_.display(); }
 
 bool UserIO::handleKeyPress(sf::Keyboard::Key key)
 {

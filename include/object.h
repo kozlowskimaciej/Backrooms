@@ -22,6 +22,7 @@ public:
         EMF,
         ITEM_PICK_AREA,
         CAMERA,
+        PAGE,
         TOTAL
     };
 
@@ -65,11 +66,7 @@ protected:
 
     std::unique_ptr<b2Body> body_{nullptr};
 
-    virtual ~Object()
-    {
-        if (body_)
-            destroyBody();
-    }
+    virtual ~Object();
     Object(b2World &world, Type type);
     Object(b2World &world, Type type, const b2Vec2 &position, float angle);
     void setBody(b2World &world, Type type, const b2Vec2 &position, float angle);

@@ -7,21 +7,46 @@ SRC = src
 INCLUDE = include
 LIB = lib
 LIBRARIES = -lbox2d -lsfml-graphics -lsfml-window -lsfml-system
-EXECUTABLE = main
 
-SRCS = $(wildcard $(SRC)/*.cpp)
-OBJS = $(patsubst $(SRC)/%.cpp,$(BIN)/%.o,$(SRCS))
-HEADERS = $(INCLUDE)/*
+DIR = mains
 
-all: compile link
+CATCH = catch
 
-link: $(OBJS)
-	$(CXX) $(CXX_FLAGS) $(OBJS) -o $(BIN)/$(EXECUTABLE) -L$(LIB) $(LIBRARIES)
+MAIN = main
+TEST = tests
 
-compile: $(OBJS)
+MAIN_OBJ = $(BIN)/$(DIR)/$(MAIN).o
+TEST_OBJ = $(BIN)/$(DIR)/$(TEST).o
+CATCH_DIR = $(TEST)/catch2
 
-$(BIN)/%.o: $(SRC)/%.cpp $(HEADERS)
-	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -c $< -o $@
+SRCS = $(wildcard $(SRC)/*.cpp)							# source files in src/
+OBJS = $(patsubst $(SRC)/%.cpp,$(BIN)/%.o,$(SRCS))		# obj files in bin/
+HEADERS = $(INCLUDE)/*									# header files in include/
+
+all: compile link tests
+
+link: $(OBJS) $(MAIN_OBJ)
+	$(CXX) $(CXX_FLAGS) $(OBJS) $(MAIN_OBJ) -o $(BIN)/$(MAIN) -L$(LIB) $(LIBRARIES)    # $(MAIN) executable linkage
+
+tests:	$(OBJS) $(TEST_OBJ)
+	$(CXX) $(CXX_FLAGS) $(OBJS) $(TEST_OBJ) -o $(BIN)/$(TEST) -L$(LIB) $(LIBRARIES)    # $(TEST) executable linkage
+
+compile: $(OBJS) $(MAIN_OBJ) $(TEST_OBJ)
+
+$(BIN)/%.o: $(SRC)/%.cpp $(HEADERS) $(BIN)
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -c $< -o $@    # $(SRC) files compilation
+	
+$(MAIN_OBJ): $(MAIN)/$(MAIN).cpp $(HEADERS) $(BIN) $(BIN)/$(DIR)
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -c $< -o $@    # $(MAIN).cpp file compilation
+
+$(TEST_OBJ): $(TEST)/$(TEST).cpp $(HEADERS) $(CATCH_DIR)/$(CATCH).hpp $(BIN) $(BIN)/$(DIR)
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -I$(CATCH_DIR) -c $< -o $@    # $(TEST).cpp file compilation
+
+$(BIN):
+	mkdir $(BIN)    # $(BIN) directory creation
+
+$(BIN)/$(DIR):
+	mkdir $(BIN)/$(DIR)    # $(BIN)/$(DIR) directory creation
 
 clean:
-	rm -r $(BIN)/*
+	rm -r $(BIN)    # removing $(BIN) and its contents

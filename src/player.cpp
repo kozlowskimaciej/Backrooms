@@ -78,6 +78,7 @@ void Player::itemOperations(UserIO &userIO)
     if (userIO.handleKeyPress(sf::Keyboard::E) && nearbyItem_)
     {
         ownedItems_.push_back(nearbyItem_);
+        nearbyItem_->picked();
         nearbyItem_->destroyBody();
         // Deleting b2Body calls EndContact
         // but this is likely done by another "thread"

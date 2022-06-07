@@ -7,7 +7,7 @@ b2Vec2 World::normalizeChunkPosition(b2Vec2 position) const
     position.y = round(position.y / Conf::chunkWidth) * Conf::chunkWidth;
 
     return position;
-};
+}
 
 /**
  * @brief
@@ -20,7 +20,7 @@ b2Vec2 World::normalizeChunkPosition(b2Vec2 position) const
  */
 void World::spawnChunk(b2World &world, const b2Vec2 &position, Mediator &mediator)
 {
-    chunks[position] = std::make_unique<Chunk>(world, position, mediator);
+    chunks_[position] = std::make_unique<Chunk>(world, position, mediator);
 }
 
 /**
@@ -35,25 +35,25 @@ void World::removeChunk(const b2Vec2 &position)
     b2Vec2 foundPosition = closestChunk(position);
 
     if (foundPosition.IsValid())
-        chunks.erase(foundPosition);
+        chunks_.erase(foundPosition);
 }
 
 /**
  * @brief
- * Removes all chunks
+ * Removes all chunks_
  */
 void World::clear()
 {
-    chunks.clear();
+    chunks_.clear();
 }
 
 /**
  * @brief
- * Renders chunks in render distance field and removes unrendered chunks
+ * Renders chunks_ in render distance field and removes unrendered chunks_
  * @param world
- * World with chunks that will be altered
+ * World with chunks_ that will be altered
  * @param playerPosition
- * Position of player, from whom will be calculated distance to surrounding chunks
+ * Position of player, from whom will be calculated distance to surrounding chunks_
  */
 void World::draw(b2World &world, const b2Vec2 &playerPosition, Mediator &mediator)
 {
@@ -67,12 +67,12 @@ void World::draw(b2World &world, const b2Vec2 &playerPosition, Mediator &mediato
         {
             try
             {
-                chunks.at(b2Vec2(i, j));
+                chunks_.at(b2Vec2(i, j));
 
                 if (i < normalizedPosition.x - Conf::chunkWidth * Conf::renderChunkDistance || i > normalizedPosition.x + Conf::chunkWidth * Conf::renderChunkDistance)
-                    chunks.erase(b2Vec2(i, j));
+                    chunks_.erase(b2Vec2(i, j));
                 if (j < normalizedPosition.y - Conf::chunkWidth * Conf::renderChunkDistance || j > normalizedPosition.y + Conf::chunkWidth * Conf::renderChunkDistance)
-                    chunks.erase(b2Vec2(i, j));
+                    chunks_.erase(b2Vec2(i, j));
             }
             catch (const std::out_of_range &exception)
             {
@@ -89,7 +89,7 @@ bool World::isHunt(const b2Vec2 &position) const
 
     try
     {
-        return chunks.at(chunkPosition).get()->isHunt();
+        return chunks_.at(chunkPosition).get()->isHunt();
     }
     catch (const std::out_of_range &exception)
     {
@@ -110,7 +110,7 @@ b2Vec2 World::closestChunk(const b2Vec2 &position) const
     b2Vec2 chunkPosition = normalizeChunkPosition(position);
     try
     {
-        chunks.at(chunkPosition); // If chunk exists, return it
+        chunks_.at(chunkPosition); // If chunk exists, return it
         return chunkPosition;
     }
     catch (const std::out_of_range &exception)
@@ -143,19 +143,19 @@ b2Vec2 World::openChunk(const b2Vec2 &position, Directions &prefDirection) const
     if (currentChunk.IsValid())
     {
         b2Vec2 neighbourChunk = this->closestChunk(b2Vec2(position.x + Conf::chunkWidth, position.y));
-        if (neighbourChunk.IsValid() && !chunks.at(currentChunk)->wallNorth_) // Checks north route
+        if (neighbourChunk.IsValid() && !chunks_.at(currentChunk)->wallNorth_) // Checks north route
             routes.push_back({N, neighbourChunk});
 
         neighbourChunk = this->closestChunk(b2Vec2(position.x, position.y - Conf::chunkWidth));
-        if (neighbourChunk.IsValid() && !chunks.at(currentChunk)->wallWest_) // Checks west route
+        if (neighbourChunk.IsValid() && !chunks_.at(currentChunk)->wallWest_) // Checks west route
             routes.push_back({W, neighbourChunk});
 
         neighbourChunk = this->closestChunk(b2Vec2(position.x - Conf::chunkWidth, position.y));
-        if (neighbourChunk.IsValid() && !chunks.at(neighbourChunk)->wallNorth_) // Checks south route
+        if (neighbourChunk.IsValid() && !chunks_.at(neighbourChunk)->wallNorth_) // Checks south route
             routes.push_back({S, neighbourChunk});
 
         neighbourChunk = this->closestChunk(b2Vec2(position.x, position.y + Conf::chunkWidth));
-        if (neighbourChunk.IsValid() && !chunks.at(neighbourChunk)->wallWest_) // Checks east route
+        if (neighbourChunk.IsValid() && !chunks_.at(neighbourChunk)->wallWest_) // Checks east route
             routes.push_back({E, neighbourChunk});
 
         if (!routes.size()) // If no choice is available, return not valid vector

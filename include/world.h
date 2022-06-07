@@ -1,7 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "object.h"
 #include "chunk.h"
 
 #include <map> // for storing chunks
@@ -9,7 +8,7 @@
 class World
 {
 private:
-    std::map<b2Vec2, std::unique_ptr<Chunk>> chunks;
+    std::map<b2Vec2, std::unique_ptr<Chunk>> chunks_;
     b2Vec2 normalizeChunkPosition(b2Vec2 position) const;
 
 public:

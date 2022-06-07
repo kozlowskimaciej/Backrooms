@@ -38,7 +38,10 @@ void MyListener::BeginContact(b2Contact *contact)
         {
             // item near
             if (debug_)
+            {
                 std::cerr << "Item contact\n";
+                std::cerr << Page::pickedPages() << std::endl;
+            }
 
             mediator_.notify(*static_cast<Item *>(objB), Mediator::ITEM_CONTACT);
             // static_cast<Player *>(objA)->itemContact(game_.shareObject<Item>(static_cast<Item *>(objB)));

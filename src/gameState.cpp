@@ -2,7 +2,7 @@
 
 GameState::GameState()
     : listener_{*this, debugMode_},
-      player_{world_, {0.f, 0.f}, 0.f},
+      player_{world_, {1.f, 1.f}, 0.f},
       enemy_{world_, {Conf::chunkWidth, 0.f}, 0.f}
 {
     // Setting contact listener
