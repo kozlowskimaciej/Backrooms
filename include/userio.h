@@ -30,6 +30,7 @@ public:
 
     // Displays frame
     void end();
+    void setKeyPress(sf::Keyboard::Key key);
     bool handleKeyPress(sf::Keyboard::Key key);
     void handleEvents();
     int getMouseXMovement();

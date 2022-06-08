@@ -50,18 +50,5 @@ public:
     void step(UserIO &userIO);
 };
 
-template <typename T>
-std::shared_ptr<T> GameState::shareObject(const T *searchedObj) const
-{
-    for (auto obj : objects_)
-    {
-        if (obj.get() == searchedObj)
-        {
-            return std::static_pointer_cast<T>(obj);
-        }
-    }
-
-    return nullptr;
-}
-
+#include "gameState.tpp" // for template implementation separation
 #endif

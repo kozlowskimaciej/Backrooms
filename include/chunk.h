@@ -32,15 +32,7 @@ private:
     b2Vec2 getWallWestPosition() const;
 
     template <typename T>
-    void spawnItem(unsigned int chance, b2World &world, Mediator &mediator)
-    {
-        bool willSpawn = chunkGenerator.drawLots(chance, 100u);
-        if (willSpawn && std::find(Chunk::spawnedItems_.begin(), Chunk::spawnedItems_.end(), position_) == Chunk::spawnedItems_.end())
-        {
-            mediator.notify(std::make_shared<T>(world, position_, 0, mediator), Mediator::ITEM_CREATED);
-            Chunk::spawnedItems_.push_back(position_);
-        }
-    };
+    void spawnItem(unsigned int chance, b2World &world, Mediator &mediator);
 
     void spawnWalls(bool lowerDensity, b2World &world);
 
@@ -50,4 +42,5 @@ public:
     b2Vec2 getPosition() const { return position_; };
 };
 
+#include "chunk.tpp"
 #endif

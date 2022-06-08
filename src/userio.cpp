@@ -33,6 +33,11 @@ void UserIO::start() { window_.clear(); }
 
 void UserIO::end() { window_.display(); }
 
+void UserIO::setKeyPress(sf::Keyboard::Key key)
+{
+    keyPresses_[key] = true;
+}
+
 bool UserIO::handleKeyPress(sf::Keyboard::Key key)
 {
     bool temp = keyPresses_[key];
